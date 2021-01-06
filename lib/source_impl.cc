@@ -613,6 +613,36 @@ bool source_impl::get_gain_mode( size_t chan )
   return false;
 }
 
+// JP - Added next X lines - Interaction with noise source across all channels (?)
+bool source_impl::set_noise_mode( bool noise, size_t chan )
+{
+  size_t channel = 0;
+  for (source_iface *dev : _devs)
+    for (size_t dev_chan = 0; dev_chan < dev->get_num_channels(); dev_chan++)
+      if ( chan == channel++ ) {
+        if ( _noise_mode[ chan ] != noise ) {
+          _noise_mode[ chan ] = noise;
+          bool mode = dev->set_noise_mode( noise, dev_chan );
+          return mode;
+        } else { return _noise_mode[ chan ]; }
+      }
+
+  return false;
+}
+
+bool source_impl::get_noise_mode( size_t chan )
+{
+  size_t channel = 0;
+  for (source_iface *dev : _devs)
+    for (size_t dev_chan = 0; dev_chan < dev->get_num_channels(); dev_chan++)
+      if ( chan == channel++ )
+        return dev->get_noise_mode( dev_chan );
+
+  return false;
+}
+// End JP
+
+
 double source_impl::set_gain( double gain, size_t chan )
 {
   size_t channel = 0;

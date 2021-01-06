@@ -55,6 +55,10 @@ public:
   osmosdr::gain_range_t get_gain_range( const std::string & name, size_t chan = 0 );
   bool set_gain_mode( bool automatic, size_t chan = 0 );
   bool get_gain_mode( size_t chan = 0 );
+// JP - Add next 2 lines - Noise source interaction function declarations
+  bool set_noise_mode( bool noise, size_t chan = 0 );
+  bool get_noise_mode( size_t chan = 0 );
+
   double set_gain( double gain, size_t chan = 0 );
   double set_gain( double gain, const std::string & name, size_t chan = 0 );
   double get_gain( size_t chan = 0 );
@@ -99,6 +103,8 @@ private:
   std::map< size_t, double > _center_freq;
   std::map< size_t, double > _freq_corr;
   std::map< size_t, bool > _gain_mode;
+// JP - Added next line
+  std::map< size_t, bool > _noise_mode;
   std::map< size_t, double > _gain;
   std::map< size_t, double > _if_gain;
   std::map< size_t, double > _bb_gain;

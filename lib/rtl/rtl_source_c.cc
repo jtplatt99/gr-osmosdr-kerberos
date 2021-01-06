@@ -86,6 +86,7 @@ rtl_source_c::rtl_source_c (const std::string &args)
     _running(false),
     _no_tuner(false),
     _auto_gain(false),
+    _noise_source(false),
     _if_gain(0),
     _skipped(0)
 {
@@ -206,6 +207,12 @@ rtl_source_c::rtl_source_c (const std::string &args)
   ret = rtlsdr_set_agc_mode(_dev, int(_auto_gain));
   if (ret < 0)
     throw std::runtime_error("Failed to set agc mode.");
+
+// JP - Added next 3 lines - Detect failures to properly set noise source mode
+  ret = rtlsdr_set_gpio(_dev, int(_noise_source), 0);
+  if (ret < 0)
+    throw std::runtime_error("Failed to set noise source mode.");
+
 
   if (direct_samp) {
     ret = rtlsdr_set_direct_sampling(_dev, direct_samp);
@@ -582,6 +589,22 @@ bool rtl_source_c::set_gain_mode( bool automatic, size_t chan )
 bool rtl_source_c::get_gain_mode( size_t chan )
 {
   return _auto_gain;
+}
+
+// JP - Added next 14 lines - Add support for getting and setting noise source modes
+bool rtl_source_c::set_noise_mode( bool noise, size_t chan )
+{
+  if (_dev) {
+    if (!rtlsdr_set_gpio(_dev, int(noise), 0)) {
+      _noise_source = noise;
+    }
+  }
+  return get_noise_mode(chan);
+}
+
+bool rtl_source_c::get_noise_mode( size_t chan )
+{
+  return _noise_source;
 }
 
 double rtl_source_c::set_gain( double gain, size_t chan )

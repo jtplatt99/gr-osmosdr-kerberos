@@ -126,6 +126,7 @@ templates:
     self.${'$'}{id}.set_dc_offset_mode(${'$'}{${'dc_offset_mode' + str(n)}}, ${n})
     self.${'$'}{id}.set_iq_balance_mode(${'$'}{${'iq_balance_mode' + str(n)}}, ${n})
     self.${'$'}{id}.set_gain_mode(${'$'}{${'gain_mode' + str(n)}}, ${n})
+    self.${'$'}{id}.set_noise_mode(${'$'}{${'noise_mode' + str(n)}}, ${n})
     % endif
     self.${'$'}{id}.set_gain(${'$'}{${'gain' + str(n)}}, ${n})
     self.${'$'}{id}.set_if_gain(${'$'}{${'if_gain' + str(n)}}, ${n})
@@ -143,6 +144,7 @@ templates:
     - set_dc_offset_mode(${'$'}{${'dc_offset_mode' + str(n)}}, ${n})
     - set_iq_balance_mode(${'$'}{${'iq_balance_mode' + str(n)}}, ${n})
     - set_gain_mode(${'$'}{${'gain_mode' + str(n)}}, ${n})
+    - set_noise_mode(${'$'}{${'noise_mode' + str(n)}}, ${n})
     % endif
     - set_gain(${'$'}{${'gain' + str(n)}}, ${n})
     - set_if_gain(${'$'}{${'if_gain' + str(n)}}, ${n})
@@ -247,6 +249,11 @@ documentation: |-
   To allow manual control of RF/IF/BB gain stages, manual gain mode must be configured.
   Currently, only RTL-SDR devices support automatic gain mode.
 
+  Noise mode:
+  Deactivates (default) / activates the noise source found on GPIO 0 of the KerberosSDR.
+  Currently, only the KerberosSDR support activatio of the common noise source.
+  Note: Only attempt to activate the noise source when using Dev#0 on the KerberosSDR.
+
   % endif
   RF Gain:
   Overall RF gain of the device.
@@ -316,6 +323,13 @@ PARAMS_TMPL = """
   default: False
   options: [False, True]
   option_labels: [Manual, Automatic]
+  hide: ${'$'}{'none' if (nchan > ${n}) else 'all'}
+- id: noise_mode${n}
+  label: 'Ch${n}: Noise Source Mode'
+  dtype: bool
+  default: False
+  options: [False, True]
+  option_labels: [Disabled, Enabled]
   hide: ${'$'}{'none' if (nchan > ${n}) else 'all'}
 % endif
 - id: gain${n}

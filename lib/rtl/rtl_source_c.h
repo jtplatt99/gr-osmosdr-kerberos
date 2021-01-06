@@ -102,6 +102,10 @@ public:
   osmosdr::gain_range_t get_gain_range( const std::string & name, size_t chan = 0 );
   bool set_gain_mode( bool automatic, size_t chan = 0 );
   bool get_gain_mode( size_t chan = 0 );
+// JP - Added next 2 Lines - Add support for enabling the noise source
+  bool set_noise_mode( bool noise, size_t chan = 0 );
+  bool get_noise_mode( size_t chan = 0 );
+
   double set_gain( double gain, size_t chan = 0 );
   double set_gain( double gain, const std::string & name, size_t chan = 0 );
   double get_gain( size_t chan = 0 );
@@ -141,6 +145,9 @@ private:
 
   bool _no_tuner;
   bool _auto_gain;
+// JP - Added next line - Added internal noise source enable variable
+  bool _noise_source;
+
   double _if_gain;
   unsigned int _skipped;
 };

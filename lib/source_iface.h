@@ -153,6 +153,22 @@ public:
    * \param chan the channel index 0 to N-1
    * \return the actual gain in dB
    */
+// JP - Added next 15 lines - Noise source
+  virtual bool set_noise_mode( bool noise, size_t chan = 0 ) { return false; }
+
+  /*!
+   * Set the noise mode selected for the underlying radio hardware.
+   * \param noise the desired noise source state on the given channel
+   * \param chan the channel index 0 to N-1
+   * \return the actual noise mode (true means the noise source is on)
+   */
+  virtual bool get_noise_mode( size_t chan = 0 ) { return false; }
+
+  /*!
+   * Get the noise mode selected for the underlying radio hardware.
+   * \param chan the channel index 0 to N-1
+   * \return the actual noise mode (true means the noise source is on)
+   */
   virtual double set_gain( double gain, size_t chan = 0 ) = 0;
 
   /*!
