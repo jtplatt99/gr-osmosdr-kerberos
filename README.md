@@ -1,3 +1,22 @@
+# gr-osmosdr-kerberos
+[gr-osmosdr](https://osmocom.org/projects/gr-osmosdr) is a library for GNU Radio adding support for a variety of popular software defined radio (SDR) modules. Included in the list of supported devices is the RTL-SDR R820T2 Receiver, which is the basis of the [KerberosSDR](https://www.rtl-sdr.com/ksdr), a 4 Channel Coherent RTL-SDR.
+
+gr-osmosdr-kerberos is a modified version of gr-osmosdr intended to provide additional support for the KerberosSDR, most significant of which is allowing for control of the KerberosSDR common noise source from within GNU Radio. This relies on the installation of the modified RTL-SDR-Kerberos Drivers provided available at the following link: https://github.com/rtlsdrblog/rtl-sdr-kerberos. Install the drivers according to the instructions at one of the following links: https://github.com/rtlsdrblog/kerberossdr or https://github.com/rfjohnso/kerberossdr (see 4. Install RTL-SDR-Kerberos Drivers).
+## Building / Installation
+After installing gnuradio and rtl-sdr-kerberos, proceed by building gr-osmosdr-kerberos as follows:
+```sh
+git clone https://github.com/jtplatt99/gr-osmosdr-kerberos.git
+cd gr-osmosdr-kerberos/
+mkdir build
+cd build/
+cmake ../
+# Note if you are not using the funcube dongle and 'make' fails on "fcdproplus/fcd.h", try altering your cmake command to:
+# cmake ../ -DENABLE_FCD=OFF
+make
+sudo make install
+sudo ldconfig
+```
+## [gr-osmosdr](https://osmocom.org/projects/gr-osmosdr) README:
 While primarily being developed for the OsmoSDR hardware, this block
 as well supports:
 
@@ -35,17 +54,3 @@ enable specific source/sink components thereafter.
 
 Please note: prior pulling a new version from git and compiling it,
 please do a "make uninstall" first to properly remove the previous version.
-
-Building with cmake:
-
-git clone git://git.osmocom.org/gr-osmosdr
-cd gr-osmosdr/
-mkdir build
-cd build/
-cmake ../
-make
-sudo make install
-sudo ldconfig
-
-NOTE: The osmocom blocks will appear under 'Sources' and 'Sinks' categories
-in GRC menu.
